@@ -1,7 +1,7 @@
 ---
 title: "Variables and Assignment"
-teaching: 5
-exercises: 5
+teaching: 10
+exercises: 10
 questions:
 - "How can I store data in programs?"
 objectives:
@@ -12,16 +12,19 @@ keypoints:
 - "Use `print` to display values."
 - "Variables persist between cells."
 - "Variables must be created before they are used."
+- "Variables can be used in calculations."
+- "Use an index to get a single character from a string."
+- "Use a slice to get a substring."
+- "Use the built-in function `len` to find the length of a string."
 - "Python is case-sensitive."
 - "Use meaningful variable names."
-- "Variables can be used in calculations."
 ---
 ## Use variables to store values.
 
 *   Variables are names for values.
 *   In Python the `=` symbol assigns the value on the right to the name on the left.
 *   The variable is created when a value is assigned to it.
-*   Here's Python that assigns an age to a variable `age`
+*   Here, Python assigns an age to a variable `age`
     and a name in quotation marks to a variable `first_name`.
 
 ~~~
@@ -30,18 +33,19 @@ first_name = 'Ahmed'
 ~~~
 {: .python}
 
-*   Variable names:
-    *   cannot start with a digit
-    *   cannot contain spaces, quotation marks, or other punctuation
-    *   *may* contain an underscore (typically used to separate words in long variable names)
-*   Underscores at the start like `__alistairs_real_age` have a special meaning
+*   Variable names
+    * can **only** contain letters, digits, and underscore `_` (typically used to separate words in long variable names)
+    * cannot start with a digit
+*   Variable names that start with underscores like `__alistairs_real_age` have a special meaning
     so we won't do that until we understand the convention.
 
 ## Use `print` to display values.
 
 *   Python has a built-in function called `print` that prints things as text.
 *   Call the function (i.e., tell Python to run it) by using its name.
-*   Provide values to the function (e.g., things to print) in parentheses.
+*   Provide values to the function (i.e., the things to print) in parentheses.
+*   To add a string to the printout, wrap the string in single or double quotations.
+*   The values passed to the function are called 'arguments'
 
 ~~~
 print(first_name, 'is', age, 'years old')
@@ -54,13 +58,6 @@ Ahmed is 42 years old
 
 *   `print` automatically puts a single space between items to separate them.
 *   And wraps around to a new line at the end.
-
-## Variables persist between cells.
-
-*   Variables defined in one cell exist in all following cells.
-*   Notebook cells are just a way to organize a program:
-    as far as Python is concerned,
-    all of the source code is one long set of instructions.
 
 ## Variables must be created before they are used.
 
@@ -83,30 +80,30 @@ NameError: name 'last_name' is not defined
 {: .error}
 
 *   The last line of an error message is usually the most informative.
-*   We will look at error messages in detail [later]({{ site.github.url }}/05-error-messages/).
+*   We will look at error messages in detail [later]({{ page.root }}/15-scope/#reading-error-messages).
 
-## Python is case-sensitive.
-
-*   Python thinks that upper- and lower-case letters are different,
-    so `Name` and `name` are different variables.
-*   Again,
-    there are conventions around using upper-case letters at the start of variable names
-    so we will use lower-case letters for now.
-
-## Use meaningful variable names.
-
-*   Python doesn't care what you call variables as long as they obey the rules
-    (alphanumeric characters and the underscore).
-
-~~~
-flabadab = 42
-ewr_422_yY = 'Ahmed'
-print(ewr_422_yY, 'is', flabadab, 'years old')
-~~~
-{: .python}
-
-*   Use meaningful variable names to help other people understand what the program does.
-*   The most important "other person" is your future self.
+> ## Variables Persist Between Cells
+>
+> Be aware that it is the order of **execution** of cells that is important in a Jupyter notebook, not the order
+> in which they appear. Python will remember **all** the code that was run previously, including any variables you have
+> defined, irrespective of the order in the notebook. Therefore if you define variables lower down the notebook and then
+> (re)run cells further up, those defined further down will still be present. As an example, create 2 cells with the
+> following content, in this order:
+>
+> ~~~
+> print(myval)
+> ~~~
+> {: .python}
+>
+> ~~~
+> myval = 1
+> ~~~
+> {: .python}
+>
+> If you execute this in order, the first cell will give an error. However, if you run the first cell **after** the second
+> cell it will print out ‘1’. To prevent confusion, it can be helpful to use the `Kernel` -> `Restart & Run All` option which
+> clears the interpreter and runs everything from a clean slate going top to bottom.
+{: .callout}
 
 ## Variables can be used in calculations.
 
@@ -123,20 +120,116 @@ Age in three years: 45
 ~~~
 {: .output}
 
+## Use an index to get a single character from a string.
+
+*   The characters (individual letters, numbers, and so on) in a string are
+    ordered. For example, the string 'AB' is not the same as 'BA'. Because of
+    this ordering, we can treat the string as a list of characters.
+*   Each position in the string (first, second, etc.) is given a number. This
+    number is called an index or sometimes a subscript.
+*   Indices are numbered from 0.
+*   Use the position's index in square brackets to get the character at that
+    position.
+
+~~~
+atom_name = 'helium'
+print(atom_name[0])
+~~~
+{: .python}
+~~~
+h
+~~~
+{: .output}
+
+## Use a slice to get a substring.
+
+*   A part of a string is called a substring. A substring can be as short as a
+    single character.
+*   An item in a list is called an element. Whenever we treat a string as if it
+    were a list, the string's elements are its individual characters.
+*   A slice is a part of a string (or, more generally, any list-like thing).
+*   We take a slice by using `[start:stop]`, where `start` is replaced with the
+    index of the first element we want and `stop` is replaced with the index of
+    the element just after the last element we want.
+*   Mathematically, you might say that a slice selects `[start:stop)`.
+*   The difference between stop and start is the slice's length.
+*   Taking a slice does not change the contents of the original string. Instead,
+    the slice is a copy of part of the original string.
+
+~~~
+atom_name = 'sodium'
+print(atom_name[0:3])
+~~~
+{: .python}
+~~~
+sod
+~~~
+{: .output}
+
+## Use the built-in function `len` to find the length of a string.
+
+~~~
+print(len('helium'))
+~~~
+{: .python}
+~~~
+6
+~~~
+{: .output}
+
+*   Nested functions are evaluated from the inside out,
+    just like in mathematics.
+
+## Python is case-sensitive.
+
+*   Python thinks that upper- and lower-case letters are different,
+    so `Name` and `name` are different variables.
+*   There are conventions for using upper-case letters at the start of variable names so we will use lower-case letters for now.
+
+## Use meaningful variable names.
+
+*   Python doesn't care what you call variables as long as they obey the rules
+    (alphanumeric characters and the underscore).
+
+~~~
+flabadab = 42
+ewr_422_yY = 'Ahmed'
+print(ewr_422_yY, 'is', flabadab, 'years old')
+~~~
+{: .python}
+
+*   Use meaningful variable names to help other people understand what the program does.
+*   The most important "other person" is your future self.
+
 > ## Swapping Values
 >
-> Draw a table showing the values of the variables in this program
-> after each statement is executed.
-> In simple terms, what do the last three lines of this program do?
+> Fill the table showing the values of the variables in this program
+> **after** each statement is executed.
 >
 > ~~~
-> lowest = 1.0
-> highest = 3.0
-> temp = lowest
-> lowest = highest
-> highest = temp
+> # Command  # Value of x   # Value of y   # Value of swap #
+> x = 1.0    #              #              #               #
+> y = 3.0    #              #              #               #
+> swap = x   #              #              #               #
+> x = y      #              #              #               #
+> y = swap   #              #              #               #
 > ~~~
-> {: .source}
+> {: .python}
+> > ## Solution
+> >
+> > ~~~
+> > # Command  # Value of x   # Value of y   # Value of swap #
+> > x = 1.0    # 1.0          # not defined  # not defined   #
+> > y = 3.0    # 1.0          # 3.0          # not defined   #
+> > swap = x   # 1.0          # 3.0          # 1.0           #
+> > x = y      # 3.0          # 3.0          # 1.0           #
+> > y = swap   # 3.0          # 1.0          # 1.0           #
+> > ~~~
+> > {: .output}
+> > 
+> > These three lines exchange the values in `x` and `y` using the `swap`
+> > variable for temporary storage. This is a fairly common programming idiom.
+>{: .solution}
 {: .challenge}
 
 > ## Predicting Values
@@ -146,9 +239,82 @@ Age in three years: 45
 > then check your prediction.)
 >
 > ~~~
-> initial = "left"
+> initial = 'left'
 > position = initial
-> initial = "right"
+> initial = 'right'
 > ~~~
-> {: .source}
+> {: .python}
+> > ## Solution
+> >
+> > ~~~
+> > 'left'
+> > ~~~
+> > {: .output}
+> >
+>> The `initial` variable is assigned the value 'left'.
+> > In the second line, the `position` variable also receives
+>> the string value 'left'. In third line, the `initial` variable is given the
+>> value 'right', but the `position` variable retains its string value
+>> of 'left'.
+>{: .solution}
+{: .challenge}
+
+> ## Challenge
+>
+> If you assign `a = 123`,
+> what happens if you try to get the second digit of `a` via `a[1]`?
+>
+> > ## Solution
+> > Numbers are not stored in the written representation,
+> > so they can't be treated like strings.
+> >
+> > ~~~
+> > a = 123
+> > print(a[1])
+> > ~~~
+> > {: .python}
+> > ~~~
+> > TypeError: 'int' object is not subscriptable
+> > ~~~
+> > {: .error}
+> {: .solution}
+{: .challenge}
+
+> ## Choosing a Name
+>
+> Which is a better variable name, `m`, `min`, or `minutes`?
+> Why?
+> Hint: think about which code you would rather inherit
+> from someone who is leaving the lab:
+>
+> 1. `ts = m * 60 + s`
+> 2. `tot_sec = min * 60 + sec`
+> 3. `total_seconds = minutes * 60 + seconds`
+>
+> > ## Solution
+> >
+> > `minutes` is better because `min` might mean something like "minimum"
+> > (and actually does in Python, but we haven't seen that yet).
+> {: .solution}
+{: .challenge}
+
+> ## Slicing
+>
+> What does the following program print?
+>
+> ~~~
+> atom_name = 'carbon'
+> print('atom_name[1:3] is:', atom_name[1:3])
+> ~~~
+> {: .python}
+> ~~~
+> atom_name[1:3] is: ar
+> ~~~
+> {: .output}
+>
+> 1.  What does `thing[low:high]` do?
+> 2.  What does `thing[low:]` (without a value after the colon) do?
+> 3.  What does `thing[:high]` (without a value before the colon) do?
+> 4.  What does `thing[:]` (just a colon) do?
+> 5.  What does `thing[number:negative-number]` do?
 {: .challenge}

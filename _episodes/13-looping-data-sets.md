@@ -20,6 +20,7 @@ keypoints:
 *   And lists can contain character strings.
 
 ~~~
+import pandas
 for filename in ['data/gapminder_gdp_africa.csv', 'data/gapminder_gdp_asia.csv']:
     data = pandas.read_csv(filename, index_col='country')
     print(filename, data.min())
@@ -53,8 +54,10 @@ dtype: float64
 *   The most common patterns are:
     *   `*` meaning "match zero or more characters"
     *   `?` meaning "match exactly one character"
-*   Provided in Python by the `glob` library, which provides a function also called `glob`.
-*   E.g., `glob.glob('*.txt')` matches all files in the current directory whose names end with `.txt`.
+*   Python contains the `glob` library to provide pattern matching functionality
+*   The `glob` library contains a function also called `glob` to match file patterns
+*   E.g., `glob.glob('*.txt')` matches all files in the current directory 
+    whose names end with `.txt`.
 *   Result is a (possibly empty) list of character strings.
 
 ~~~
@@ -84,9 +87,9 @@ all PDB files: []
     so that simple patterns will find the right data.
 
 ~~~
-for filename in glob.glob('data/*.csv'):
+for filename in glob.glob('data/gapminder_*.csv'):
     data = pandas.read_csv(filename)
-    print(filename, data.['gdpPercap_1952'].min())
+    print(filename, data['gdpPercap_1952'].min())
 ~~~
 {: .python}
 ~~~
@@ -112,25 +115,64 @@ data/gapminder_gdp_oceania.csv 10039.59564
 > 2. `data/gapminder_gdp_americas.csv`
 > 3. `data/gapminder_gdp_asia.csv`
 > 4. 1 and 2 are not matched.
+>
+> > ## Solution
+> >
+> > 1 is not matched by the glob.
+> {: .solution}
 {: .challenge}
 
-> ## Maximum File Size
+> ## Minimum File Size
 >
 > Modify this program so that it prints the number of records in
 > the file that has the fewest records.
 >
 > ~~~
+> import glob
+> import pandas
 > fewest = ____
 > for filename in glob.glob('data/*.csv'):
->     fewest = ____
+>     dataframe = pandas.____(filename)
+>     fewest = min(____, dataframe.shape[0])
 > print('smallest file has', fewest, 'records')
 > ~~~
-> {: .source}
+> {: .python}
+> Notice that the shape method returns a tuple with 
+> the number of rows and columns of the data frame.
+>
+> > ## Solution
+> > ~~~
+> > import glob
+> > import pandas
+> > fewest = float('Inf')
+> > for filename in glob.glob('data/*.csv'):
+> >     dataframe = pandas.read_csv(filename)
+> >     fewest = min(fewest, dataframe.shape[0])
+> > print('smallest file has', fewest, 'records')
+> > ~~~
+> > {: .python}
+> {: .solution}
 {: .challenge}
 
 > ## Comparing Data
 >
-> Write a short program that reads in the regional data sets
+> Write a program that reads in the regional data sets
 > and plots the average GDP per capita for each region over time
 > in a single chart.
+> > ## Solution
+> > ~~~
+> > import glob
+> > import pandas 
+> > import matplotlib.pyplot as plt
+> > fig, ax = plt.subplots(1,1)
+> > for filename in glob.glob('data/gapminder_gdp*.csv'):
+> >     dataframe = pandas.read_csv(filename)
+> >     # extract region from the filename, expected to be in the format 'data/gapminder_gdp_<region>.csv'
+> >     region = filename.rpartition('_')[2][:-4] 
+> >     dataframe.mean().plot(ax=ax, label=region)
+> > plt.legend()
+> > plt.show()
+> > ~~~
+> > {: .python}
+> {: .solution}
 {: .challenge}

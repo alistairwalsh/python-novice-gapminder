@@ -1,7 +1,7 @@
 ---
 title: "Data Types and Type Conversion"
-teaching: 5
-exercises: 5
+teaching: 10
+exercises: 10
 questions:
 - "What kinds of data do programs store?"
 - "How can I convert one type to another?"
@@ -22,10 +22,9 @@ keypoints:
 ## Every value has a type.
 
 *   Every value in a program has a specific type.
-*   Integer (`int`): counting numbers like 3 or -512.
-*   Floating point number (`float`): fractional numbers like 3.14159 or -2.5.
-    *   Integers are used to count, floats are used to measure.
-*   Character string (usually just called "string", `str`): text.
+*   Integer (`int`): represents positive or negative whole numbers like 3 or -512.
+*   Floating point number (`float`): represents real numbers like 3.14159 or -2.5.
+*   Character string (usually called "string", `str`): text.
     *   Written in either single quotes or double quotes (as long as they match).
     *   The quotation marks aren't printed when the string is displayed.
 
@@ -54,7 +53,7 @@ print(type(fitness))
 ~~~
 {: .output}
 
-## Types control what operations can be done on values.
+## Types control what operations (or methods) can be performed on a given value.
 
 *   A value's type determines what the program can do to it.
 
@@ -81,7 +80,7 @@ TypeError: unsupported operand type(s) for -: 'str' and 'str'
 ~~~
 {: .error}
 
-## Strings can be added and multiplied.
+## You can use the "+" and "*" operators on strings.
 
 *   "Adding" character strings concatenates them.
 
@@ -95,8 +94,8 @@ Ahmed Walsh
 ~~~
 {: .output}
 
-*   Multiplying a character string by an integer replicates it.
-    *   Since multiplication is just repeated addition.
+*   Multiplying a character string by an integer _N_ creates a new string that consists of that character string repeated  _N_ times.
+    *   Since multiplication is repeated addition.
 
 ~~~
 separator = '=' * 10
@@ -142,7 +141,7 @@ TypeError: object of type 'int' has no len()
 *   Cannot add numbers and strings.
 
 ~~~
-print(1 + 'A')
+print(1 + '2')
 ~~~
 {: .python}
 ~~~
@@ -156,7 +155,7 @@ TypeError: unsupported operand type(s) for +: 'int' and 'str'
 {: .error}
 
 *   Not allowed because it's ambiguous: should `1 + '2'` be `3` or `'12'`?
-*   Use the name of a type as a function to convert a value to that type.
+*   Some types can be converted to other types by using the type name as a function.
 
 ~~~
 print(1 + int('2'))
@@ -190,7 +189,7 @@ three squared is 9.0
 *   If we make one cell in a spreadsheet depend on another,
     and update the latter,
     the former updates automatically.
-*   This does *not* happen in programming languages.
+*   This does **not** happen in programming languages.
 
 ~~~
 first = 1
@@ -208,10 +207,51 @@ first is 2 and second is 5
     creates a new value, and assigns it to `second`.
 *   After that, `second` does not remember where it came from.
 
+> ## Fractions
+>
+> What type of value is 3.4?
+> How can you find out?
+>
+> > ## Solution
+> >
+> > It is a floating-point number (often abbreviated "float").
+> >
+> > ~~~
+> > print(type(3.4))
+> > ~~~
+> > {: .python}
+> > ~~~
+> > <class 'float'>
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
+
+> ## Automatic Type Conversion
+>
+> What type of value is 3.25 + 4?
+>
+> > ## Solution
+> >
+> > It is a float:
+> > integers are automatically converted to floats as necessary.
+> >
+> > ~~~
+> > result = 3.25 + 4
+> > print(result, 'is', type(result))
+> > ~~~
+> > {: .python}
+> > ~~~
+> > 7.25 is <class 'float'>
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
+
 > ## Choose a Type
 >
 > What type of value (integer, floating point number, or character string)
-> would you use to represent each of the following?
+> would you use to represent each of the following?  Try to come up with more than one good answer for each problem.  For example, in  # 1, when would counting days with a floating point variable make more sense than using an integer?  
 >
 > 1. Number of days since the start of the year.
 > 2. Time elapsed since the start of the year.
@@ -219,35 +259,79 @@ first is 2 and second is 5
 > 4. A lab specimen's age.
 > 5. Current population of a city.
 > 6. Average population of a city over time.
+>
+> > ## Solution
+> >
+> > The answers to the questions are:
+> > 1)Integer, since the number of days would lie between 1 and 365. 
+> > 2) Floating point, since the time would represent the days, months etc in total.
+> > 3) Character string, since the serial number has a long string with alphabets and numbers.
+> > 4) Integer, since the age of a specimen cannot be represented in floating point or character.
+> > 5) Floating point number, since larger numbers can be represented using floating point easily.
+> > 6) Floating point number, since an average is likely to have a fractional part (decimal point).
+> >
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 > ## Division Types
 >
-> The `//` operator calcultaes the whole-number result of division,
-> while the '%' operator calculates the remainder from division:
+> In Python 3, the `//` operator performs integer (whole-number) floor division, the `/` operator performs floating-point
+> division, and the '%' (or *modulo*) operator calculates and returns the remainder from integer division:
 >
 > ~~~
 > print('5 // 3:', 5//3)
+> print('5 / 3:', 5/3)
 > print('5 % 3:', 5%3)
 > ~~~
 > {: .python}
 >
 > ~~~
 > 5 // 3: 1
+> 5 / 3: 1.6666666666666667
 > 5 % 3: 2
 > ~~~
 > {: .output}
+>
+> However in Python2 (and other languages), the `/` operator between two integer types perform a floor (`//`) division. To perform a float division, we have to convert one of the integers to float.
+>
+> ~~~
+> print('5 // 3:', 1)
+> print('5 / 3:', 1 )
+> print('5 / float(3):', 1.6666667 )
+> print('float(5) / 3:', 1.6666667 )
+> print('float(5 / 3):', 1.0 )
+> print('5 % 3:', 2)
+> ~~~
 >
 > If `num_subjects` is the number of subjects taking part in a study,
 > and `num_per_survey` is the number that can take part in a single survey,
 > write an expression that calculates the number of surveys needed
 > to reach everyone once.
+>
+> > ## Solution
+> > We want the minimum number of surveys that reaches everyone once, which is
+> > the rounded up value of `num_subjects / num_per_survey`. This is 
+> > equivalent to performing an integer division with `//` and adding 1.
+> > ~~~
+> > num_subjects = 600
+> > num_per_survey = 42
+> > num_surveys = num_subjects // num_per_survey + 1
+> >
+> > print(num_subjects, 'subjects,', num_per_survey, 'per survey:', num_surveys)
+> > ~~~
+> > {: .python}
+> > ~~~
+> > 600 subjects, 42 per survey: 15
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 > ## Strings to Numbers
 >
-> `float` will convert a string to a floating point number,
-> and `int` will convert a floating point number to an integer:
+> Where reasonable, `float()` will convert a string to a floating point number,
+> and `int()` will convert a floating point number to an integer:
 >
 > ~~~
 > print("string to float:", float("3.4"))
@@ -256,20 +340,63 @@ first is 2 and second is 5
 > {: .python}
 >
 > ~~~
-> 3.4
-> 3
+> string to float: 3.4
+> float to int: 3
 > ~~~
 > {: .output}
 >
-> Given that,
-> what do you expect this program to do?
+> If the conversion doesn't make sense, however, an error message will occur
+>
+> ~~~
+> print("string to float:", float("Hello world!"))
+> ~~~
+> {: .python}
+>
+> ~~~
+> ---------------------------------------------------------------------------
+> ValueError                                Traceback (most recent call last)
+> <ipython-input-5-df3b790bf0a2> in <module>()
+> ----> 1 print("string to float:", float("Hello world!"))
+>
+> ValueError: could not convert string to float: 'Hello world!'
+> ~~~
+> {: .error}
+>
+> Given this information, what do you expect the following program to do?
+>
 > What does it actually do?
+>
 > Why do you think it does that?
 >
 > ~~~
 > print("fractional string to int:", int("3.4"))
 > ~~~
 > {: .python}
+> 
+> > ## Solution
+> > What do you expect this program to do? It would not be so unreasonable to expect the Python 3 `int` command to
+> > convert the string "3.4" to 3.4 and an additional type conversion to 3. After all, Python 3 performs a lot of other
+> > magic - isn't that part of its charm?
+> > 
+> > However, Python 3 throws an error. Why? To be consistent, possibly. If you ask Python to perform two consecutive
+> > typecasts, you must convert it explicitly in code.
+> >
+> > ~~~
+> > int("3.4")
+> > int(float("3.4"))
+> > ~~~
+> > {: .python}
+> > ~~~
+> > In [2]: int("3.4")
+> > ---------------------------------------------------------------------------
+> > ValueError                                Traceback (most recent call last)
+> > <ipython-input-2-ec6729dfccdc> in <module>()
+> > ----> 1 int("3.4")
+> > ValueError: invalid literal for int() with base 10: '3.4'
+> > 3
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 > ## Arithmetic with Different Types
@@ -292,11 +419,30 @@ first is 2 and second is 5
 > 6. `2.0 * second`
 >
 > > ## Solution
-> > Answer: A and D
+> >
+> > Answer: 1 and 4
 > {: .solution}
 {: .challenge}
 
 > ## Complex Numbers
 >
-> FIXME: introduce complex numbers
+> Python provides complex numbers,
+> which are written as `1.0+2.0j`.
+> If `val` is an imaginary number,
+> its real and imaginary parts can be accessed using *dot notation*
+> as `val.real` and `val.imag`.
+>
+> 1.  Why do you think Python uses `j` instead of `i` for the imaginary part?
+> 2.  What do you expect `1+2j + 3` to produce?
+> 3.  What do you expect '4j' to be?  What about `4 j` or `4 + j'? > 
+> 
+> > ## Solution
+> >
+> > 1. Standard mathematics treatments typically use `i` to denote an imaginary number. However, from media reports it
+> > was an early convention established from electrical engineering that now presents a technically expensive area to
+> > change. [Stack Overflow provides additional explanation and
+> > discussion](http://stackoverflow.com/questions/24812444/why-are-complex-numbers-in-python-denoted-with-j-instead-of-i)
+> > 2. _4+2j_
+> > 3. _4j, syntax error, depends on the value of j_
+> {: .solution}
 {: .challenge}
